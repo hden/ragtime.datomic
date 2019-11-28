@@ -1,4 +1,4 @@
-# ragtime.datomic
+# ragtime.datomic [![CircleCI](https://circleci.com/gh/hden/ragtime.datomic/tree/master.svg?style=svg)](https://circleci.com/gh/hden/ragtime.datomic/tree/master)
 
 Manage datomic schema with [ragtime](https://github.com/weavejester/ragtime).
 
