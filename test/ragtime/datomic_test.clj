@@ -1,32 +1,53 @@
 (ns ragtime.datomic-test
   (:require [clojure.test :refer :all]
+            [clojure.pprint :refer [pprint]]
             [ragtime.datomic :refer :all]
+            [shrubbery.core :as shrubbery]
             [datomic.client.api :as datomic]
-            [ragtime.core :as ragtime]))
+            [datomic.client.api.protocols :as client-protocols]
+            [datomic.client.api.impl :as client-impl]
+            [ragtime.core :as ragtime]
+            [ragtime.protocols :as ragtime-protocols]))
 
-(def client (datomic/client {:server-type :peer-server
-                             :access-key "myaccesskey"
-                             :secret "mysecret"
-                             :endpoint "localhost:8998"}))
+(defn create-mocks []
+  (let [db (shrubbery/mock client-protocols/Db client-impl/Queryable)
+        conn (shrubbery/spy (reify client-protocols/Connection
+                              (db [_] db)
+                              (transact [_ arg-map])))
+        store (create-connection conn)]
+    {:db db
+     :conn conn
+     :store store}))
 
-(def conn (datomic/connect client {:db-name "hello"}))
+(deftest test-applied-migration-ids
+  (let [{:keys [db conn store]} (create-mocks)]
+    (ragtime-protocols/applied-migration-ids store)
+    (is (shrubbery/received? db client-impl/q))))
 
-(deftest index-key
-  (are [x] (= :ragtime.datomic/migration-id (:index-key x))
-    (create-connection conn)
-    (create-migration :id [{:db/ident :inv/sku
-                            :db/valueType :db.type/string
-                            :db/unique :db.unique/identity
-                            :db/cardinality :db.cardinality/one}])))
+(deftest test-run-up
+  (let [{:keys [db conn store]} (create-mocks)
+        schema [{:db/ident :inv/sku
+                 :db/valueType :db.type/string
+                 :db/unique :db.unique/identity
+                 :db/cardinality :db.cardinality/one}]
+        migration (create-migration :id schema)
+        _ (ragtime-protocols/run-up! migration {:conn conn})]
+    (is (shrubbery/received? conn client-protocols/transact))
+    (let [tx-data (-> (shrubbery/calls conn)
+                      (get client-protocols/transact)
+                      first
+                      first
+                      :tx-data)]
+      (is (= (first tx-data)
+             [:db/add "datomic.tx" :ragtime.datomic/migration-id :id])))))
 
-(deftest e2e
-  (let [connection (create-connection conn)
+(deftest test-migrate-all
+  (let [{:keys [db conn store]} (create-mocks)
         migration (create-migration :id [{:db/ident :inv/sku
                                           :db/valueType :db.type/string
                                           :db/unique :db.unique/identity
                                           :db/cardinality :db.cardinality/one}])
         index (ragtime/into-index [migration])]
-    (testing "applied-migrations"
-      (ragtime/migrate-all connection index [migration])
-      (is (= (seq [migration])
-             (ragtime/applied-migrations connection index))))))
+    (ragtime/migrate-all store index [migration])
+    (is (shrubbery/received? db client-impl/q))
+    (is (shrubbery/received? conn client-protocols/transact))))
