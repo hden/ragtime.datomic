@@ -1,5 +1,6 @@
 (ns ragtime.datomic
   (:require [ragtime.protocols :as ragtime-protocol]
+            [datomic.client.api.protocols :as client-protocols]
             [datomic.client.api :as datomic]))
 
 (defn- create-schema [index-key]
@@ -40,6 +41,7 @@
 (defn create-connection
   ([conn] (create-connection conn ::migration-id))
   ([conn index-key]
+   {:pre [(and (satisfies? client-protocols/Connection conn) (keyword? index-key))]}
    (->Connection conn index-key)))
 
 (defrecord Migration [id txs index-key]
