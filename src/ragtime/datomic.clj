@@ -23,11 +23,13 @@
       (datomic/transact conn {:tx-data schema}))))
 
 (defn- find-migrations [db index-key]
-  (let [tuples (datomic/q '[:find ?id
+  (let [tuples (datomic/q '[:find ?id ?t
                             :in $ ?a
-                            :where [_ ?a ?id]]
+                            :where [_ ?a ?id ?t]]
                           db index-key)]
-    (map first tuples)))
+    (into []
+          (map first)
+          (sort-by last tuples))))
 
 (defrecord Connection [conn index-key]
   ragtime-protocol/DataStore
