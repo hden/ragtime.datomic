@@ -7,5 +7,5 @@
                  [ragtime/core "0.8.0"]]
   :repl-options {:init-ns ragtime.datomic}
   :profiles
-  {:dev {:dependencies [[com.datomic/client-cloud "0.8.78"]
+  {:dev {:dependencies [[com.datomic/client-cloud "0.8.81"]
                         [com.gearswithingears/shrubbery "0.4.1"]]}})
