@@ -1,4 +1,4 @@
-# ragtime.datomic [![CircleCI](https://circleci.com/gh/hden/ragtime.datomic/tree/master.svg?style=svg)](https://circleci.com/gh/hden/ragtime.datomic/tree/master)
+# ragtime.datomic [![CircleCI](https://circleci.com/gh/hden/ragtime.datomic/tree/master.svg?style=svg)](https://circleci.com/gh/hden/ragtime.datomic/tree/master) [![codecov](https://codecov.io/gh/hden/ragtime.datomic/branch/master/graph/badge.svg?token=H3B9JL6DQX)](https://codecov.io/gh/hden/ragtime.datomic)
 
 Manage datomic schema with [ragtime](https://github.com/weavejester/ragtime).
 
