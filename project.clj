@@ -5,6 +5,7 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [ragtime/core "0.8.0"]]
+  :plugins [[lein-cloverage "1.2.2"]]
   :repl-options {:init-ns ragtime.datomic}
   :profiles
   {:dev {:dependencies [[com.datomic/client-cloud "0.8.105"]

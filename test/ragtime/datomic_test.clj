@@ -1,9 +1,8 @@
 (ns ragtime.datomic-test
-  (:require [clojure.test :refer :all]
-            [clojure.pprint :refer [pprint]]
-            [ragtime.datomic :refer :all]
+  (:require [clojure.test :refer [deftest is]]
+            [ragtime.datomic :refer [create-connection create-migration]]
             [shrubbery.core :as shrubbery]
-            [datomic.client.api :as datomic]
+            [datomic.client.api]
             [datomic.client.api.protocols :as client-protocols]
             [datomic.client.api.impl :as client-impl]
             [ragtime.core :as ragtime]
@@ -20,12 +19,12 @@
      :store store}))
 
 (deftest test-applied-migration-ids
-  (let [{:keys [db conn store]} (create-mocks)]
+  (let [{:keys [db store]} (create-mocks)]
     (ragtime-protocols/applied-migration-ids store)
     (is (shrubbery/received? db client-impl/q))))
 
 (deftest test-run-up
-  (let [{:keys [db conn store]} (create-mocks)
+  (let [{:keys [conn]} (create-mocks)
         schema [{:db/ident :inv/sku
                  :db/valueType :db.type/string
                  :db/unique :db.unique/identity
