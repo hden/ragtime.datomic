@@ -13,7 +13,7 @@ https://docs.datomic.com/cloud/schema/schema-change.html
 
 First, add the following dependency to your project:
 
-`[ragtime.datomic "0.1.0-SNAPSHOT"]`
+`[ragtime.datomic "0.2.0"]`
 
 Once you have at least one migration, you can set up Ragtime. You'll need to build a configuration map that will tell Ragtime how to connect to your database, and where the migrations are. In the example below, we'll put the configuration in the user namespace:
 
@@ -48,7 +48,7 @@ This library will install an extra schema inn your database.
 ```clojure
 {:db/ident       :ragtime.datomic/migration-id
  :db/valueType   :db.type/keyword
- :db/unique      :db.unique/identity
+ :db/unique      :db.unique/value
  :db/cardinality :db.cardinality/one}
 ```
 
