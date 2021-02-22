@@ -6,7 +6,7 @@
 (defn- create-schema [index-key]
   [{:db/ident       index-key
     :db/valueType   :db.type/keyword
-    :db/unique      :db.unique/identity
+    :db/unique      :db.unique/value
     :db/cardinality :db.cardinality/one}])
 
 (defn- has-ident? [db ident]
