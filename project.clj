@@ -8,5 +8,5 @@
   :plugins [[lein-cloverage "1.2.2"]]
   :repl-options {:init-ns ragtime.datomic}
   :profiles
-  {:dev {:dependencies [[com.datomic/client-cloud "0.8.105"]
+  {:dev {:dependencies [[com.datomic/client-cloud "0.8.113"]
                         [com.gearswithingears/shrubbery "0.4.1"]]}})
