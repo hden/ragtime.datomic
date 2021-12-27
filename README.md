@@ -13,7 +13,7 @@ https://docs.datomic.com/cloud/schema/schema-change.html
 
 First, add the following dependency to your project:
 
-`[ragtime.datomic "0.2.0"]`
+`[ragtime.datomic "0.3.0"]`
 
 Once you have at least one migration, you can set up Ragtime. You'll need to build a configuration map that will tell Ragtime how to connect to your database, and where the migrations are. In the example below, we'll put the configuration in the user namespace:
 
