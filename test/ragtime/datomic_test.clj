@@ -12,7 +12,7 @@
   (let [db (shrubbery/mock client-protocols/Db client-impl/Queryable)
         conn (shrubbery/spy (reify client-protocols/Connection
                               (db [_] db)
-                              (transact [_ arg-map])))
+                              (transact [_ _])))
         store (create-connection conn)]
     {:db db
      :conn conn
@@ -37,7 +37,7 @@
                       first
                       first
                       :tx-data)]
-      (is (= (first tx-data)
+      (is (= (last tx-data)
              [:db/add "datomic.tx" :ragtime.datomic/migration-id :id])))))
 
 (deftest test-migrate-all
