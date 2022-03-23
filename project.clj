@@ -7,7 +7,7 @@
                  [com.cognitect/anomalies "0.1.12"]
                  [diehard "0.11.1"]
                  [ragtime/core "0.8.1"]]
-  :plugins [[lein-cloverage "1.2.2"]]
+  :plugins [[lein-cloverage "1.2.3"]]
   :repl-options {:init-ns ragtime.datomic}
   :profiles
   {:dev {:dependencies [[com.datomic/client-cloud "1.0.119"]
