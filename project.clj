@@ -5,7 +5,7 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [com.cognitect/anomalies "0.1.12"]
-                 [diehard "0.11.10"]
+                 [diehard "0.11.11"]
                  [ragtime/core "0.8.1"]]
   :plugins [[lein-cloverage "1.2.4"]]
   :repl-options {:init-ns ragtime.datomic}
